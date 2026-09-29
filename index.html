@@ -1,0 +1,188 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>💗</title>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #ffe0ec, #fff0f5);
+  font-family: Georgia, serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  color: #d6336c;
+}
+
+.screen {
+  display: none;
+  text-align: center;
+  width: 100%;
+  padding: 20px;
+}
+
+.screen.active {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  animation: appear 1s ease;
+}
+
+.card {
+  background: #fff;
+  border: 3px solid #ffb6ce;
+  border-radius: 20px;
+  padding: 40px 30px;
+  box-shadow: 0 10px 40px #e88ba955;
+  cursor: pointer;
+  transition: transform 0.3s;
+}
+
+.card:hover {
+  transform: scale(1.05);
+}
+
+.heart {
+  font-size: 75px;
+  animation: heartbeat 1.2s infinite;
+}
+
+.card p {
+  font-size: 24px;
+  margin-bottom: 0;
+}
+
+.photo {
+  max-width: 90%;
+  max-height: 75vh;
+  border-radius: 20px;
+  box-shadow: 0 8px 30px #d6336c44;
+  object-fit: contain;
+  cursor: pointer;
+  transition: transform 0.3s;
+}
+
+.photo:hover {
+  transform: scale(1.02);
+}
+
+video {
+  width: 90%;
+  max-width: 600px;
+  max-height: 75vh;
+  border-radius: 20px;
+}
+
+.floating-heart {
+  position: fixed;
+  bottom: -40px;
+  font-size: 24px;
+  pointer-events: none;
+  animation: floatUp 5s linear forwards;
+}
+
+@keyframes heartbeat {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.15); }
+}
+
+@keyframes appear {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes floatUp {
+  to {
+    transform: translateY(-110vh) rotate(30deg);
+    opacity: 0;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- ОТКРЫТКА -->
+<section id="start" class="screen active">
+  <div class="card" onclick="showPhoto()">
+    <div class="heart">💌</div>
+    <p>Открой меня</p>
+  </div>
+</section>
+
+<!-- КАРТИНКА: ВСТАВЬ ФАЙЛ photo.jpg -->
+<section id="photoScreen" class="screen">
+  <img
+    src="photo.jpg"
+    class="photo"
+    alt="💗"
+    onclick="showVideo()"
+  >
+</section>
+
+<!-- ВИДЕО: ВСТАВЬ ФАЙЛ video.mp4 -->
+<section id="videoScreen" class="screen">
+  <video id="myVideo" controls playsinline>
+    <source src="video.mp4" type="video/mp4">
+    Твой браузер не поддерживает видео.
+  </video>
+</section>
+
+<script>
+function showScreen(id) {
+  document.querySelectorAll(".screen").forEach(screen => {
+    screen.classList.remove("active");
+  });
+
+  document.getElementById(id).classList.add("active");
+}
+
+function showPhoto() {
+  showScreen("photoScreen");
+  hearts();
+}
+
+function showVideo() {
+  showScreen("videoScreen");
+
+  const video = document.getElementById("myVideo");
+  video.currentTime = 0;
+  video.play().catch(() => {});
+}
+
+function hearts() {
+  for (let i = 0; i < 35; i++) {
+    const heart = document.createElement("div");
+    heart.className = "floating-heart";
+    heart.textContent = ["💗", "💕", "💖", "💘"][
+      Math.floor(Math.random() * 4)
+    ];
+
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.animationDelay = Math.random() * 2 + "s";
+
+    document.body.appendChild(heart);
+
+    setTimeout(() => heart.remove(), 7000);
+  }
+}
+</script>
+
+</body>
+</html>
